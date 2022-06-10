@@ -2,6 +2,7 @@ package br.dev.luisgustavosales.users.controllers;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.dev.luisgustavosales.users.dto.ResponseUserDTO;
 import br.dev.luisgustavosales.users.entities.User;
 import br.dev.luisgustavosales.users.exceptionhandler.exceptions.UserAlreadyExistsException;
 import br.dev.luisgustavosales.users.exceptionhandler.exceptions.UserNotFoundException;
@@ -30,11 +32,13 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<User> findUserById(@PathVariable Long id) {
+	public ResponseEntity<ResponseUserDTO> findUserById(@PathVariable Long id) {
 		log.info("Find User by Id: " + id);
 		User user = userService.findUserById(id);
+		
 		if (user != null) {
-			return ResponseEntity.ok(user);
+			var responseUserDto = this.convertUserToResponseUserDto(user);
+			return ResponseEntity.ok(responseUserDto);
 		} else {
 			throw new UserNotFoundException("User not found: " + id);
 			// return ResponseEntity.notFound().build();
@@ -42,18 +46,19 @@ public class UserController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<User> findUserByEmail(@RequestParam String email) {
+	public ResponseEntity<ResponseUserDTO> findUserByEmail(@RequestParam String email) {
 		log.info("Find User by Email: " + email);
 		User user = userService.findUserByEmail(email);
 		if (user != null) {
-			return ResponseEntity.ok(user);
+			var responseUserDto = this.convertUserToResponseUserDto(user);
+			return ResponseEntity.ok(responseUserDto);
 		} else {
 			throw new UserNotFoundException("User not found: " + email);
 		}
 	}
 	
 	@PostMapping
-	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+	public ResponseEntity<ResponseUserDTO> createUser(@Valid @RequestBody User user) {
 		log.info("Create new user: " + user.toString());
 		
 		User userToCreate = userService.findUserByEmail(user.getEmail());
@@ -61,14 +66,15 @@ public class UserController {
 			throw new UserAlreadyExistsException("User already exists: " + user.getEmail());
 		} else {
 			User newUser = userService.create(user);
-			return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+			var responseUserDto = this.convertUserToResponseUserDto(newUser);
+			return ResponseEntity.status(HttpStatus.CREATED).body(responseUserDto);
 		}
 		
 		
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(
+	public ResponseEntity<ResponseUserDTO> updateUser(
 			@Valid @RequestBody User user, 
 			@PathVariable Long id) {
 		
@@ -78,7 +84,8 @@ public class UserController {
 		if (userToUpdated != null) {
 			user.setId(id);
 			User userUpdated = userService.update(id, user);
-			return ResponseEntity.ok(userUpdated);
+			var responseUserDto = this.convertUserToResponseUserDto(userUpdated);
+			return ResponseEntity.ok(responseUserDto);
 		} else {
 			throw new UserNotFoundException("User not found: " + id);
 		}
@@ -98,5 +105,11 @@ public class UserController {
 			throw new UserNotFoundException("User not found: " + id);
 		}
 		
+	}
+	
+	private ResponseUserDTO convertUserToResponseUserDto(User user) {
+		var responseUserDto = new ResponseUserDTO();
+		BeanUtils.copyProperties(user, responseUserDto, "password");
+		return responseUserDto;
 	}
 }
