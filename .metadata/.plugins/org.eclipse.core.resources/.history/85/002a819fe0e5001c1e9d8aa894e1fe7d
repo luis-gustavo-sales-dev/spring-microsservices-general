@@ -1,0 +1,5 @@
+package br.dev.luisgustavosales.AuthenticationServer.config;
+
+public class AppConfig {
+
+}

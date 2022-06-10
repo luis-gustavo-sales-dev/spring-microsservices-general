@@ -1,0 +1,5 @@
+package br.dev.luisgustavosales.AuthenticationServer.entities;
+
+public class User {
+
+}

@@ -1,0 +1,24 @@
+package br.dev.luisgustavosales.users.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import br.dev.luisgustavosales.users.entities.User;
+import br.dev.luisgustavosales.users.repositories.UserRepository;
+
+@Service
+public class UserService {
+
+	@Autowired
+	private UserRepository userRepository;
+	
+	public User findUserByEmail(String email) {
+		try {
+			User user = userRepository.findByEmail(email);
+			return user;	
+		} catch (Exception e) {
+			
+		}
+		
+	}
+}

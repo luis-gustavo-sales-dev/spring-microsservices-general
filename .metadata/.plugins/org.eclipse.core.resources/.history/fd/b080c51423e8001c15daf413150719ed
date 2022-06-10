@@ -1,0 +1,5 @@
+package br.dev.luisgustavosales.users.entities;
+
+public class User {
+
+}
