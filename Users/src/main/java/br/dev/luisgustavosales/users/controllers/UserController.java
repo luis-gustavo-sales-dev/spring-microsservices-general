@@ -107,6 +107,7 @@ public class UserController {
 		
 	}
 	
+	// We should create a Bean to convert User to ResponseUserDto if we use this convertion in other local in the project
 	private ResponseUserDTO convertUserToResponseUserDto(User user) {
 		var responseUserDto = new ResponseUserDTO();
 		BeanUtils.copyProperties(user, responseUserDto, "password");

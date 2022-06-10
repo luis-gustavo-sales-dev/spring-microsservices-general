@@ -1,0 +1,24 @@
+Authenticate user and access allowed endpoints
+
+
+ 0 - Do conections between microsservices
+  0.1 - Configure oauth route at application.properties in api-gateway
+  0.2 - Configure feignclient between User and AuthenticationServer microsservices
+  0.3 - Enable Authentication server to be a client in EurekaServer
+  
+ 1 - Generate access token from valid user in AuthenticationServer microsservices
+  1.a - Insert Oauth dependency at pom.xml
+  1.b - Create a public key and insert in application.properties (temporaly)
+  1.b - Configure the project to generate receive user and password DTO and give a access token
+
+ 2 - Configure api-gateway to receive and valid an access token
+  2.a - Insert Oauth dependency at pom.xml
+  2.b - Get the public key generated on AuthenticationServer and put on application.properties
+  2.c - Configure the project to confirm the validation of access token using the public key
+ 
+ 3 - Configure the api-gateway to permit requests for only allowed user
+ 
+ 
+ 4 - Configure Exception Handler in Authentication Server
+ 
+ 
