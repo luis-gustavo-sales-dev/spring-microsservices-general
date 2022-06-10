@@ -3,6 +3,11 @@ package br.dev.luisgustavosales.users.exceptionhandler;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class DefaultException {
 	private int status;
 	private String title;
@@ -13,8 +18,6 @@ public class DefaultException {
 		
 		private String name;
 		private String message;
-		
-		
 		
 		public FieldsErrors(String name, String message) {
 			super();

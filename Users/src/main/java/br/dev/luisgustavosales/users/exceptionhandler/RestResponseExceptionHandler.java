@@ -10,12 +10,48 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import br.dev.luisgustavosales.users.exceptionhandler.exceptions.UserAlreadyExistsException;
+import br.dev.luisgustavosales.users.exceptionhandler.exceptions.UserNotFoundException;
+
 @ControllerAdvice
-public class ExceptionHandler extends ResponseEntityExceptionHandler{
+public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler{
 	
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<Object> handleUserNotFoundException(
+			UserNotFoundException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.BAD_REQUEST;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(UserAlreadyExistsException.class)
+	public ResponseEntity<Object> handleUserAlreadyExistsException(
+			UserAlreadyExistsException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.BAD_REQUEST;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	// We mustn't use @ExceptionHandler here because the handled exception was not created from us
+	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(
 			MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -43,4 +79,5 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 		
 	}
 	
+
 }

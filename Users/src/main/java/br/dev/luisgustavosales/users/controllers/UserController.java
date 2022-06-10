@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.dev.luisgustavosales.users.entities.User;
+import br.dev.luisgustavosales.users.exceptionhandler.exceptions.UserAlreadyExistsException;
+import br.dev.luisgustavosales.users.exceptionhandler.exceptions.UserNotFoundException;
 import br.dev.luisgustavosales.users.services.UserService;
 import lombok.extern.java.Log;
 
@@ -34,7 +36,8 @@ public class UserController {
 		if (user != null) {
 			return ResponseEntity.ok(user);
 		} else {
-			return ResponseEntity.notFound().build();
+			throw new UserNotFoundException("User not found: " + id);
+			// return ResponseEntity.notFound().build();
 		}
 	}
 	
@@ -45,7 +48,7 @@ public class UserController {
 		if (user != null) {
 			return ResponseEntity.ok(user);
 		} else {
-			return ResponseEntity.notFound().build();
+			throw new UserNotFoundException("User not found: " + email);
 		}
 	}
 	
@@ -55,7 +58,7 @@ public class UserController {
 		
 		User userToCreate = userService.findUserByEmail(user.getEmail());
 		if (userToCreate != null) {
-			return ResponseEntity.badRequest().build();
+			throw new UserAlreadyExistsException("User already exists: " + user.getEmail());
 		} else {
 			User newUser = userService.create(user);
 			return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
@@ -77,7 +80,7 @@ public class UserController {
 			User userUpdated = userService.update(id, user);
 			return ResponseEntity.ok(userUpdated);
 		} else {
-			return ResponseEntity.notFound().build();
+			throw new UserNotFoundException("User not found: " + id);
 		}
 		
 	}
@@ -92,7 +95,7 @@ public class UserController {
 			userService.delete(id);
 			return ResponseEntity.noContent().build();
 		} else {
-			return ResponseEntity.notFound().build();
+			throw new UserNotFoundException("User not found: " + id);
 		}
 		
 	}
