@@ -1,11 +1,41 @@
 package br.dev.luisgustavosales.users.exceptionhandler;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class DefaultException {
 	private int status;
 	private String title;
 	private LocalDateTime dateTime;
+	private List<FieldsErrors> fieldsErrors;
+	
+	public static class FieldsErrors {
+		
+		private String name;
+		private String message;
+		
+		
+		
+		public FieldsErrors(String name, String message) {
+			super();
+			this.name = name;
+			this.message = message;
+		}
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public String getMessage() {
+			return message;
+		}
+		public void setMessage(String message) {
+			this.message = message;
+		}
+		
+		
+	}
 	
 	public DefaultException() {
 		super();
@@ -20,6 +50,16 @@ public class DefaultException {
 	}
 	
 	
+	
+	
+	public List<FieldsErrors> getFieldsErrors() {
+		return fieldsErrors;
+	}
+
+	public void setFieldsErrors(List<FieldsErrors> fieldsErrors) {
+		this.fieldsErrors = fieldsErrors;
+	}
+
 	public int getStatus() {
 		return status;
 	}
