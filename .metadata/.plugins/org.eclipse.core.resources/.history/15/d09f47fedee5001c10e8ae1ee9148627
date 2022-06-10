@@ -1,5 +1,0 @@
-package br.dev.luisgustavosales.AuthenticationServer.controllers;
-
-public class AuthenticationController {
-
-}

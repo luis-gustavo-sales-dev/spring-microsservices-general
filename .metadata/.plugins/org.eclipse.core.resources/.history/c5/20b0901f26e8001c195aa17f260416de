@@ -1,5 +1,0 @@
-package br.dev.luisgustavosales.users.repositories;
-
-public class UserRepository {
-
-}
