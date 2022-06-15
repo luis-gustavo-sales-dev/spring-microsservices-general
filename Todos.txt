@@ -9,9 +9,9 @@ Authenticate user and access allowed endpoints
  1 - Generate access token from valid user in AuthenticationServer microsservices
   1.a - Insert Oauth dependency at pom.xml
   1.b - Create a public key and insert in application.properties (temporaly)
-  1.b - Configure the project to generate receive user and password DTO and give a access token
+  1.c - Configure the project to generate receive user and password DTO and give a access token
 
- 2 - Configure api-gateway to receive and valid an access token
+ 2 - Configure APIGATEWAY to receive and valid an access token
   2.a - Insert Oauth dependency at pom.xml
   2.b - Get the public key generated on AuthenticationServer and put on application.properties
   2.c - Configure the project to confirm the validation of access token using the public key
