@@ -1,0 +1,38 @@
+git checkout -b feature/todo-id-0
+git checkout master
+
+
+git merge feature/todo-id-0
+- precisa estar no master ou na branch que deseja receber o merge
+- cada commit da branch será inserida na branch principal de acordo com o tempo
+- Não é uma boa prática. Melhor usar o squash abaixo.
+- ex: m1 - m2 - f1 - m3 - f2
+
+git merge --squash feature/todo-id-o
+- faz o mesmo que o comando acima mas junta todas as modificações em um único ponto no tempo.
+- é mais recomendado do que o merge puro pois fica somente com um ponto no tempo.
+- exemplo: m1 - m2 - m3 - feature1(f1 - f2 - f3)
+- Precisa dar um commit após esse comando pois ele apenas trás os arquivos para a principal (master).
+
+git rebase feature/todo-id-0
+- Parece com o git merge mas o ponto de inserção dos commits da branch inserida (todo-id-0) é diferente.
+- Todos os commits são inseridos no master no ponto onde houve a criação do branch (todo-id-0)
+- Ex: m1 - m2 - f1 - f2 - f3 - m3 - m4
+- No exemplo acima o branch todo-id-0 foi criada após o commit m2 do master.
+- CUIDADO AO USAR:
+- - O git reset não vai funcionar.
+- - Faz mais sentido usar quando, por exemplo precisa fazer o rebase da master na feature todo-id-o.
+- - Preciso estudar mais sobre o sudo dele mas não é recomendado na maioria dos casos.
+
+
+git branch
+git branch -d dev
+
+git reset HEAD~1 --hard
+- volta um commit removendo os arquivos que foram commitados no commit
+git checkout  <hash> <nomeArquivo>
+- volta o arquivo ao estado que estava naquele commit - referenciado pelo hash 
+- Precisar dar um commit logo em seguida para que o arquivo seja (salvo)
+
+git log
+git log --oneline
