@@ -15,6 +15,8 @@ public interface UserFeignClient {
 	
 	@GetMapping
 	// @GetMapping(value = "/search")
-	ResponseEntity<ResponseUserDTO> findByEmail(@RequestParam String email);
+	ResponseEntity<User> findUserByEmail(@RequestParam String email);
 
+	@GetMapping( value = "/withpassword")
+	ResponseEntity<ResponseUserDTO> findUserDtoByEmail(@RequestParam String username);
 }
