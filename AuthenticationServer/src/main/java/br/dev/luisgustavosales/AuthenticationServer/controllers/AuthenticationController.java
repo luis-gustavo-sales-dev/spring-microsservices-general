@@ -19,7 +19,8 @@ public class AuthenticationController {
 	@Autowired
 	private UserService userService;
 	// Testing find user from feignclient
-	@GetMapping
+	
+	/*@GetMapping
 	public ResponseEntity<ResponseUserDTO> findByEmail(@RequestParam String email) {
 		System.out.println("Searching for email: " + email);
 		log.info("Searching for email: " + email);
@@ -29,5 +30,5 @@ public class AuthenticationController {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(u);
-	}
+	}*/
 }

@@ -4,19 +4,16 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import br.dev.luisgustavosales.AuthenticationServer.dto.ResponseUserDTO;
 import br.dev.luisgustavosales.AuthenticationServer.entities.User;
 
 @Component
-@FeignClient( name = "users", path = "/users")
+@FeignClient( name = "users", path = "/usersforauthentication")
 public interface UserFeignClient {
 	
-	@GetMapping
-	// @GetMapping(value = "/search")
-	ResponseEntity<User> findUserByEmail(@RequestParam String email);
+	//@GetMapping
+	@GetMapping(value = "/{email}")
+	ResponseEntity<User> findUserByEmail(@PathVariable String email);
 
-	@GetMapping( value = "/withpassword")
-	ResponseEntity<ResponseUserDTO> findUserDtoByEmail(@RequestParam String username);
 }

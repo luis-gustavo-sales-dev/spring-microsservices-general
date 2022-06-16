@@ -18,7 +18,7 @@ public class UserService implements UserDetailsService{
 	@Autowired
 	private UserFeignClient userFeignClient;
 	
-	public ResponseUserDTO findByEmail(String email) {
+	/*public ResponseUserDTO findByEmail(String email) {
 		ResponseUserDTO user = userFeignClient.findUserDtoByEmail(email).getBody();
 		
 		if (user == null) {
@@ -28,10 +28,11 @@ public class UserService implements UserDetailsService{
 		log.info("User was found: " + email);
 		return user;
 		
-	}
+	}*/
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		System.out.println("Finding username [loadUserByUsername]: " + username);
 		User user = userFeignClient.findUserByEmail(username).getBody();
 		if (user == null) {
 			System.out.println("Email not found: " + username);
