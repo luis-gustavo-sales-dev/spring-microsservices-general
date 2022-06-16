@@ -30,7 +30,6 @@ public class UserService {
 			return null;
 		}
 	
-		
 	}
 	
 	public User findUserByEmail(String email) {
