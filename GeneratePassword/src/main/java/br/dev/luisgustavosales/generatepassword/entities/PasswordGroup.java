@@ -19,8 +19,8 @@ public class PasswordGroup {
 	@Column(name = "password_group_id")
 	private Long id;
 	
-	@NotBlank
-	private Long userId;
+	@NotBlank(message = "The username must have a valid value")
+	private String username;
 	
 	@NotBlank
 	private String name;
@@ -31,13 +31,6 @@ public class PasswordGroup {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PasswordGroup(Long id, @NotBlank Long userId, @NotBlank String name) {
-		super();
-		this.id = id;
-		this.userId = userId;
-		this.name = name;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -46,12 +39,12 @@ public class PasswordGroup {
 		this.id = id;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getName() {
@@ -78,11 +71,13 @@ public class PasswordGroup {
 		PasswordGroup other = (PasswordGroup) obj;
 		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
 	}
-	
+
 	@Override
 	public String toString() {
-		return "PasswordGroup [id=" + id + ", userId=" + userId + ", name=" + name + "]";
+		return "PasswordGroup [id=" + id + ", username=" + username + ", name=" + name + "]";
 	}
+	
+	
 	
 	
 }

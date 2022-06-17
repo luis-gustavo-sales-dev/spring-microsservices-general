@@ -22,9 +22,9 @@ public class PasswordService {
 	
 	public PasswordInfo createPasswordInfo(
 			PasswordInfo passwordInfo,
-			Long userId) {
+			String username) {
 		var passwordInfoByUser = passwordRepository
-				.findByNameAndUserId(passwordInfo.getName(), userId);
+				.findByNameAndUsername(passwordInfo.getName(), username);
 		
 		if (passwordInfoByUser.isEmpty()) {
 			var passwordInfoCreated = passwordRepository.save(passwordInfo);

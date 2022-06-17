@@ -9,6 +9,6 @@ import br.dev.luisgustavosales.generatepassword.entities.PasswordInfo;
 
 @Repository
 public interface PasswordInfoRepository extends JpaRepository<PasswordInfo, Long>{
-	Optional<PasswordInfo> findByNameAndUserId(String name, Long id);
+	Optional<PasswordInfo> findByNameAndUsername(String name, String username);
 	Optional<PasswordInfo> findByName(String name);
 }
