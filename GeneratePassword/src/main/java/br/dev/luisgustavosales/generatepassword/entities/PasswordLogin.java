@@ -17,8 +17,8 @@ public class PasswordLogin {
 	@NotBlank
 	private String name;
 	
-	@NotBlank
-	private Long userId;
+	@NotBlank(message = "The username must have a valid value")
+	private String username;
 	
 	public Long getId() {
 		return id;
@@ -33,11 +33,12 @@ public class PasswordLogin {
 		this.name = name;
 	}
 	
-	public Long getUserId() {
-		return userId;
+	
+	public String getUsername() {
+		return username;
 	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	@Override
 	public int hashCode() {
@@ -56,8 +57,9 @@ public class PasswordLogin {
 	}
 	@Override
 	public String toString() {
-		return "PasswordLogin [id=" + id + ", name=" + name + "]";
+		return "PasswordLogin [id=" + id + ", name=" + name + ", username=" + username + "]";
 	}
+
 	
 	
 	

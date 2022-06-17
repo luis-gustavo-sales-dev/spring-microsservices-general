@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
+import br.dev.luisgustavosales.apigateway.filters.SimplePreFilter;
+
 @RefreshScope
 @Configuration
 public class AppConfig {
@@ -24,5 +26,10 @@ public class AppConfig {
 	@Bean
 	public JwtTokenStore tokenStore() {
 		return new JwtTokenStore(accessTokenConverter());
+	}
+	
+	@Bean
+	public SimplePreFilter simplePreFilter() {
+		return new SimplePreFilter();
 	}
 }

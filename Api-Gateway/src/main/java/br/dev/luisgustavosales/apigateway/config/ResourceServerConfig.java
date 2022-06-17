@@ -27,7 +27,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
 	private static final String[] PUBLIC = { "/micro-oauth/oauth/token" };
 	
-	private static final String[] OPERATOR = { "/micro-users/**" };
+	private static final String[] OPERATOR = { "/micro-users/**", "/micro-generatepassword/**" };
 	
 	private static final String[] ADMIN = { "/hr-payroll/**", "/micro-users/**", "/actuator/**", "/hr-worker/actuator/**", "/hr-oauth/actuator/**" };
 	

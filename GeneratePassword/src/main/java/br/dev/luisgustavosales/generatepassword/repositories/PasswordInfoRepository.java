@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import br.dev.luisgustavosales.generatepassword.entities.PasswordInfo;
 
 @Repository
-public interface PasswordRepository extends JpaRepository<PasswordInfo, Long>{
-	Optional<PasswordInfo> findByNameAndUserId(String name, Long id);
+public interface PasswordInfoRepository extends JpaRepository<PasswordInfo, Long>{
+	Optional<PasswordInfo> findByNameAndUsername(String name, String username);
 	Optional<PasswordInfo> findByName(String name);
 }

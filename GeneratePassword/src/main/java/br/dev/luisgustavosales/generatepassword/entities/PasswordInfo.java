@@ -1,7 +1,6 @@
 package br.dev.luisgustavosales.generatepassword.entities;
 
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
@@ -27,9 +24,8 @@ public class PasswordInfo {
 	// @Column(name = "password_info_id")
 	private Long id;
 
-	@NotBlank(message = "The userId must have a valid value")
-	@Min(value = 1, message = "userId must be greater or equal than 1")
-	private Long userId;
+	@NotBlank(message = "The username must have a valid value")
+	private String username;
 
 	@NotBlank(message = "Invalid name.")
 	@Size(min = 2, max = 20, message = "The name size must be between 2 and 20")
@@ -70,12 +66,12 @@ public class PasswordInfo {
 		this.id = id;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getName() {
@@ -137,9 +133,11 @@ public class PasswordInfo {
 
 	@Override
 	public String toString() {
-		return "PasswordInfo [id=" + id + ", userId=" + userId + ", name=" + name + ", login=" + login + ", domain="
+		return "PasswordInfo [id=" + id + ", username=" + username + ", name=" + name + ", login=" + login + ", domain="
 				+ domain + ", passwordGroup=" + passwordGroup + ", size=" + size + "]";
 	}
+
+	
 
 	
 
