@@ -1,6 +1,7 @@
 package br.dev.luisgustavosales.generatepassword.entities;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -40,17 +41,23 @@ public class PasswordInfo {
 	@Size(min=2, max=20, message="The name size must be between 2 and 20")
 	private String name;
 	
-	@NotBlank(message = "Invalid login.")
-	@Size(min=2, max=100, message="The login size must be between 2 and 100")
-	private String login;
+	@NotBlank(message = "password login must have a valid value")
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable( name = "tb_password_info_login",
+				joinColumns = @JoinColumn( name = "password_info_id"),
+				inverseJoinColumns = @JoinColumn( name = "password_login_id"))
+	private PasswordLogin login;
 	
-	@NotBlank(message = "Invalid domain.")
-	@Size(min=2, max=255, message="The login size must be between 2 and 255")
-	private String domain;
+	@NotBlank(message = "password domain must have a valid value")
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable( name = "tb_password_info_domain",
+				joinColumns = @JoinColumn( name = "password_info_id"),
+				inverseJoinColumns = @JoinColumn( name = "password_domain_id"))
+	private PasswordDomain domain;
 	
 	@NotBlank(message = "password group must have a valid value")
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tb_user_password_group",
+	@JoinTable(name = "tb_password_info_group",
 			joinColumns = @JoinColumn(name = "password_info_id"),
 			inverseJoinColumns = @JoinColumn(name = "password_group_id"))
 	private PasswordGroup passwordGroup;
@@ -69,76 +76,115 @@ public class PasswordInfo {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public PasswordInfo(
-			Long id, Long userId, String name, 
-			String login, String domain, PasswordGroup passwordGroup,
-			int size, Set<EnumPasswordComplexity> passwordComplexity) {
-		super();
-		this.id = id;
-		this.userId = userId;
-		this.name = name;
-		this.login = login;
-		this.domain = domain;
-		this.passwordGroup = passwordGroup;
-		this.size = size;
-		this.passwordComplexity = passwordComplexity;
-	}
-	
+
+
 	public Long getId() {
 		return id;
 	}
+
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
 	public Long getUserId() {
 		return userId;
 	}
+
+
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+
+
 	public String getName() {
 		return name;
 	}
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getLogin() {
+
+
+	public PasswordLogin getLogin() {
 		return login;
 	}
-	public void setLogin(String login) {
+
+
+	public void setLogin(PasswordLogin login) {
 		this.login = login;
 	}
-	public String getDomain() {
+
+
+	public PasswordDomain getDomain() {
 		return domain;
 	}
-	public void setDomain(String domain) {
+
+
+	public void setDomain(PasswordDomain domain) {
 		this.domain = domain;
 	}
+
+
 	public PasswordGroup getPasswordGroup() {
 		return passwordGroup;
 	}
+
+
 	public void setPasswordGroup(PasswordGroup passwordGroup) {
 		this.passwordGroup = passwordGroup;
 	}
+
+
 	public int getSize() {
 		return size;
 	}
+
+
 	public void setSize(int size) {
 		this.size = size;
 	}
+
+
 	public Set<EnumPasswordComplexity> getPasswordComplexity() {
 		return passwordComplexity;
 	}
+
+
 	public void setPasswordComplexity(Set<EnumPasswordComplexity> passwordComplexity) {
 		this.passwordComplexity = passwordComplexity;
 	}
-	
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PasswordInfo other = (PasswordInfo) obj;
+		return Objects.equals(id, other.id);
+	}
+
+
 	@Override
 	public String toString() {
 		return "PasswordInfo [id=" + id + ", userId=" + userId + ", name=" + name + ", login=" + login + ", domain="
 				+ domain + ", passwordGroup=" + passwordGroup + ", size=" + size + ", passwordComplexity="
 				+ passwordComplexity + "]";
 	}
+
+	
 	
 	
 }
