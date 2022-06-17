@@ -23,14 +23,28 @@ public class PasswordController {
 			@PathVariable Long id, 
 			@RequestHeader Map<String, String> headers) {
 		
-		headers.forEach((key, value) -> {
+		/*headers.forEach((key, value) -> {
 	        System.out.println(String.format("Header '%s' = %s", key, value));
-	    });
+	    });*/
 		
 		var passwordInfo = passwordService.findPasswordInfoById(id);
-		if (passwordInfo != null) {
-			return ResponseEntity.ok(passwordInfo);
+		if (passwordInfo == null) {
+			System.out.println("PasswordController: " + passwordInfo);
+			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.notFound().build();
+		
+		if (!passwordInfo.getUsername().equals(headers.get("username"))) {
+			
+			/*System.out.println("PasswordController: passwordInfo.Username" + 
+					passwordInfo.getUsername() + " Username: " +
+					headers.get("username"));
+					*/
+			
+			// Must throws an exception
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.ok(passwordInfo);
+		
 	}
 }
