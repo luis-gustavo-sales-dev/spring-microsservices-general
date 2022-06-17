@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.dev.luisgustavosales.generatepassword.entities.PasswordInfo;
-import br.dev.luisgustavosales.generatepassword.repositories.PasswordRepository;
+import br.dev.luisgustavosales.generatepassword.repositories.PasswordInfoRepository;
 
 @Service
 public class PasswordService {
 	
 	@Autowired
-	private PasswordRepository passwordRepository;
+	private PasswordInfoRepository passwordRepository;
 	
 	public PasswordInfo findPasswordInfoById(Long id) {
 		var passwordInfo = passwordRepository.findById(id);
