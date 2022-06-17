@@ -36,3 +36,6 @@ git checkout  <hash> <nomeArquivo>
 
 git log
 git log --oneline
+
+Para recuperar uma branch deletada acidentalmente.
+https://stackoverflow.com/questions/3640764/can-i-recover-a-branch-after-its-deletion-in-git
