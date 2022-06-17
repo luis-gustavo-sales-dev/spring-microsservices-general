@@ -11,47 +11,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.dev.luisgustavosales.generatepassword.config.Utilities;
 import br.dev.luisgustavosales.generatepassword.entities.PasswordInfo;
-import br.dev.luisgustavosales.generatepassword.services.PasswordService;
+import br.dev.luisgustavosales.generatepassword.services.PasswordInfoService;
 
 @RestController("passwords")
-public class PasswordController {
+public class PasswordInfoController {
 
 	@Autowired
-	private PasswordService passwordService;
+	private PasswordInfoService passwordService;
 
 	@Autowired
 	private Utilities utilities;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<PasswordInfo> findById(@PathVariable Long id, @RequestHeader Map<String, String> headers) {
-
-		/*
-		 * headers.forEach((key, value) -> {
-		 * System.out.println(String.format("Header '%s' = %s", key, value)); });
-		 */
+	public ResponseEntity<PasswordInfo> findById(
+			@PathVariable Long id, 
+			@RequestHeader Map<String, String> headers) {
 
 		var passwordInfo = passwordService.findPasswordInfoById(id);
 		if (passwordInfo == null) {
-			// System.out.println("PasswordController: " + passwordInfo);
 			return ResponseEntity.notFound().build();
 		}
-		
-		/*System.out.println(
-				utilities.canAcessPasswordResource(
-					passwordInfo.getUsername(), 
-					headers.get("username")));
-		 */
 		
 		if (!utilities.canAcessPasswordResource(
 				passwordInfo.getUsername(), 
 				headers.get("username"))) {
 
-			/*
-			 * System.out.println("PasswordController: passwordInfo.Username" +
-			 * passwordInfo.getUsername() + " Username: " + headers.get("username"));
-			 */
-
-			// Must throws an exception
 			return ResponseEntity.notFound().build();
 		}
 

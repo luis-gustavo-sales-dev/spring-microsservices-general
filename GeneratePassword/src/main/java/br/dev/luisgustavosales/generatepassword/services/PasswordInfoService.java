@@ -7,7 +7,7 @@ import br.dev.luisgustavosales.generatepassword.entities.PasswordInfo;
 import br.dev.luisgustavosales.generatepassword.repositories.PasswordInfoRepository;
 
 @Service
-public class PasswordService {
+public class PasswordInfoService {
 	
 	@Autowired
 	private PasswordInfoRepository passwordRepository;
