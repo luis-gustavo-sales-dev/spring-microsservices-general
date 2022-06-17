@@ -4,13 +4,21 @@ import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
+@Table( name = "tb_password_login" )
 public class PasswordLogin {
 	
 	@Id
 	private Long id;
-	private Long name;
+	
+	@NotBlank
+	private String name;
+	
+	@NotBlank
+	private Long userId;
 	
 	public Long getId() {
 		return id;
@@ -18,13 +26,19 @@ public class PasswordLogin {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getName() {
+	public String getName() {
 		return name;
 	}
-	public void setName(Long name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
