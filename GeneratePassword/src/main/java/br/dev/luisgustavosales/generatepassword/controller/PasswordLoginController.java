@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.dev.luisgustavosales.generatepassword.config.Utilities;
 import br.dev.luisgustavosales.generatepassword.entities.PasswordLogin;
 import br.dev.luisgustavosales.generatepassword.services.PasswordLoginService;
 
-@RestController("/passwordlogins")
+@RestController
+@RequestMapping(value = "/login")
 public class PasswordLoginController {
 	
 	@Autowired
@@ -27,7 +29,7 @@ public class PasswordLoginController {
 	private PasswordLoginService passwordLoginService;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<PasswordLogin> findById(
+	public ResponseEntity<PasswordLogin> findLoginById(
 			@PathVariable Long id,
 			@RequestHeader Map<String, String> headers) {
 		
@@ -52,7 +54,7 @@ public class PasswordLoginController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PasswordLogin> create(
+	public ResponseEntity<PasswordLogin> createLogin(
 			@RequestBody PasswordLogin passwordLogin,
 			@RequestHeader Map<String, String> headers) {
 		
@@ -74,7 +76,7 @@ public class PasswordLoginController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<PasswordLogin> update(
+	public ResponseEntity<PasswordLogin> updateLogin(
 			@PathVariable Long id,
 			@RequestBody PasswordLogin passwordLogin,
 			@RequestHeader Map<String, String> headers) {
@@ -107,7 +109,7 @@ public class PasswordLoginController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(
+	public ResponseEntity<Void> deleteLogin(
 			@PathVariable Long id,
 			@RequestHeader Map<String, String> headers
 			){
