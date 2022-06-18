@@ -25,8 +25,10 @@ Authenticate user and access allowed endpoints
   5.a - Configure api-gateway to create routes and permit access to all generator password endpoints (temporaly).
   5.b - Create entities for passwords and mapping them.
   5.c - Create repositories, services and controllers for passwords groups.
+	5.c.1 - Create an Exception Advisor for all project.
+	5.c.2 - Create Exceptions for business and logic rules.
   5.d - Create repositories, services and controllers for passwords logins.
-  5.d - Create repositories, services and controllers for passwords infos.
+  5.e - Create repositories, services and controllers for passwords infos.
 
  6 - Configure api-gateway to permit access for GeneratorPassword Project endpoints.
   6.a - Users can create a group password
@@ -36,3 +38,5 @@ Authenticate user and access allowed endpoints
 
  7 - Configure GeneratorPassword to block access data to other users info
   7.a - Only the owner user can access your password info (group, login, info)
+
+IMPORTANT: At the first look, classes about Password Login and Group have the same code. I think I should user inheritance or maybe refletion.

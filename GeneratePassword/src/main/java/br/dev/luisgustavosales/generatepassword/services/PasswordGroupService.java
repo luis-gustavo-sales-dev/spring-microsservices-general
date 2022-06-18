@@ -1,5 +1,7 @@
 package br.dev.luisgustavosales.generatepassword.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,20 @@ public class PasswordGroupService {
 			String username) {
 		
 		var pg = passwordRepository.findByNameAndUsername(
+				name,
+				username);
+		
+		if (pg.isPresent()) {
+			return pg.get();
+		}
+		return null;
+	}
+	
+	public List<PasswordGroup> findByNameContainingAndUsername(
+			String name,
+			String username) {
+		
+		var pg = passwordRepository.findByNameContainingIgnoreCaseAndUsername(
 				name,
 				username);
 		

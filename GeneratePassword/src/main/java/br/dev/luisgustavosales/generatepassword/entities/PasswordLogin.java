@@ -2,6 +2,7 @@ package br.dev.luisgustavosales.generatepassword.entities;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
