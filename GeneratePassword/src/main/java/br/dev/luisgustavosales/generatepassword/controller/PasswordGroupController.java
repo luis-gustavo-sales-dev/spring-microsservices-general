@@ -23,8 +23,8 @@ import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexception
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupIsUsedOnPasswordInfoException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupNotFoundException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.NotAuthorizedGroupException;
-import br.dev.luisgustavosales.generatepassword.repositories.PasswordInfoRepository;
 import br.dev.luisgustavosales.generatepassword.services.PasswordGroupService;
+import br.dev.luisgustavosales.generatepassword.services.PasswordInfoService;
 
 @RestController
 @RequestMapping(value = "/groups")
@@ -37,7 +37,7 @@ public class PasswordGroupController {
 	private PasswordGroupService passwordGroupService;
 	
 	@Autowired
-	private PasswordInfoRepository passwordInfoRepository;
+	private PasswordInfoService passwordInfoService;
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<PasswordGroup> findGroupById(
@@ -172,13 +172,13 @@ public class PasswordGroupController {
 		
 		// Find password group id on Password Info cause of reference integrity
 		// Can not delete if exists a reference in Password Info
-		var pi = passwordInfoRepository.findByGroupId(pg.getId());
+		var pi = passwordInfoService.findByGroupId(pg.getId());
 		
-		if (pi.isPresent()) {
+		if (pi != null) {
 			// System.out.println("PasswordInfo: " + pi.get());
 			// Must return an PasswordGroupIsUsedOnPasswordInfoException
 			throw new GroupIsUsedOnPasswordInfoException("This group is used for " +
-							pi.get().getName() + " password info.");
+							pi.getName() + " password info.");
 		}
 		
 		passwordGroupService.deleteById(id);

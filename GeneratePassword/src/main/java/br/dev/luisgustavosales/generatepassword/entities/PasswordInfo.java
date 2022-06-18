@@ -31,7 +31,7 @@ public class PasswordInfo {
 	@Size(min = 2, max = 20, message = "The name size must be between 2 and 20")
 	private String name;
 
-	@NotBlank(message = "password login must have a valid value")
+	// @NotBlank(message = "password login must have a valid value")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn( name = "login_id")
 	private PasswordLogin login;
@@ -39,12 +39,12 @@ public class PasswordInfo {
 	@NotBlank(message = "password domain must have a valid value")
 	private String domain;
 
-	@NotBlank(message = "password group must have a valid value")
+	// @NotBlank(message = "password group must have a valid value")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn( name = "group_id")
 	private PasswordGroup group;
 
-	@NotBlank(message = "Size must have an value")
+
 	@Min(value = 6, message = "size must be greater or equal than 6")
 	@Max(value = 24, message = "size must be less or equal than 24")
 	private int size;
@@ -134,7 +134,7 @@ public class PasswordInfo {
 	@Override
 	public String toString() {
 		return "PasswordInfo [id=" + id + ", username=" + username + ", name=" + name + ", login=" + login + ", domain="
-				+ domain + ", passwordGroup=" + group + ", size=" + size + "]";
+				+ domain + ", group=" + group + ", size=" + size + "]";
 	}
 
 	
