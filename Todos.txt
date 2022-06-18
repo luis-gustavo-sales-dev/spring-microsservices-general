@@ -1,24 +1,85 @@
 Authenticate user and access allowed endpoints
 
 
- 0 - Do conections between microsservices
+ 0 - Do conections between microsservices (DONE)
   0.1 - Configure oauth route at application.properties in api-gateway
   0.2 - Configure feignclient between User and AuthenticationServer microsservices
   0.3 - Enable Authentication server to be a client in EurekaServer
   
- 1 - Generate access token from valid user in AuthenticationServer microsservices
+ 1 - Generate access token from valid user in AuthenticationServer microsservices (DONE)
   1.a - Insert Oauth dependency at pom.xml
   1.b - Create a public key and insert in application.properties (temporaly)
   1.c - Configure the project to generate receive user and password DTO and give a access token
 
- 2 - Configure APIGATEWAY to receive and valid an access token
+ 2 - Configure APIGATEWAY to receive and valid an access token (DONE)
   2.a - Insert Oauth dependency at pom.xml
   2.b - Get the public key generated on AuthenticationServer and put on application.properties
   2.c - Configure the project to confirm the validation of access token using the public key
  
- 3 - Configure the api-gateway to permit requests for only allowed user
+ 3 - Configure the api-gateway to permit requests for only allowed user (DONE)
  
  
  4 - Configure Exception Handler in Authentication Server
  
- 
+ 5 - Configure GeneratorPassword Project
+  5.a - Configure api-gateway to create routes and permit access to all generator password endpoints (temporaly).
+  5.b - Create entities for passwords and mapping them.
+
+  5.c - Create repositories, services and controllers for passwords groups. (DONE)
+	
+	5.c.1 - Create Controllers, service and repositories for methods GET HTTP Verbs: (DONE)
+		5.c.1.1 - GET /?_name
+		5.c.1.2 - GET /id
+	5.c.2 - Create Controllers, service and repositories for methods POST and PUT HTTP Verbs: (DONE)
+		5.c.2.1 - POST
+		5.c.2.2 - PUT /id
+	5.c.3 - Create Controllers, service and repositories for methods DELETE HTTP Verbs: (DONE)
+		5.c.3.1 - DELETE /id
+	5.c.4 - Create an Exception Advisor for all project. (DONE)
+	5.c.5 - Create Exceptions for business and logic rules. (DONE)
+	5.c.6 - Use exception on PasswordGroupControllers. (DONE)
+
+  5.d - Create repositories, services and controllers for passwords logins.
+	5.d.1 - Create Controllers, service and repositories for methods GET HTTP Verbs: (DONE)
+		5.d.1.1 - GET /?_name
+		5.d.1.2 - GET /id
+		5.d.1.3 - Create exceptions and put on ControllerAdvise and Controller.
+	5.d.2 - Create Controllers, service and repositories for methods POST and PUT HTTP Verbs: (DONE)
+		5.d.2.1 - POST
+		5.d.2.2 - PUT /id
+		5.d.2.3 - Create exceptions and put on ControllerAdvise and Controller.
+	5.d.3 - Create Controllers, service and repositories for methods DELETE HTTP Verbs: (DONE)
+		5.d.3.1 - DELETE /id
+		5.d.3.2 - Create exceptions and put on ControllerAdvise and Controller.
+	5.d.4 - Create Exceptions for business and logic rules. (DONE)
+	5.d.5 - Use exception on PasswordLoginControllers. (DONE)
+
+  5.e - Create repositories, services and controllers for passwords infos.
+	5.e.1 - Create Controllers, service and repositories for methods GET HTTP Verbs: (DONE)
+		5.e.1.1 - GET /?_name
+		5.e.1.2 - GET /id
+		5.e.1.3 - Create exceptions and put on ControllerAdvise and Controller.
+	5.e.2 - Create Controllers, service and repositories for methods POST and PUT HTTP Verbs: (DONE)
+		5.e.2.1 - POST
+		5.e.2.2 - PUT /id
+		5.e.2.3 - Create exceptions and put on ControllerAdvise and Controller.
+	5.e.3 - Create Controllers, service and repositories for methods DELETE HTTP Verbs: (DONE)
+		5.e.3.1 - DELETE /id
+		5.e.3.2 - Create exceptions and put on ControllerAdvise and Controller.
+	5.e.4 - Create Exceptions for business and logic rules. (DONE)
+	5.e.5 - Use exception on PasswordInfoController. (DONE)
+
+
+ 6 - Configure GeneratorPassword to block access data to other users info
+  6.a - Only the owner user can access your password info (group, login, info)
+
+ 7 - Create a new microsservices to generate passwords in PasswordsInfo from GeneratePassword microsservices.
+  7.a - Try to change the name of microsservices called GeneratePassword to PasswordStore or create another one.
+  7.b - Create a new microservicoes called GeneratePassword.
+	OBS: this microservices will have a lots of algorithms to generate password. Each endpoint generate a type of password.
+	7.b.1 - Modify the password info to store a new field called algorithmType.
+		7.b.1.1 - Define the type of algorithms in a enum in PasswordInfo and in GeneratePassword micro.
+		7.b.1.2 - Modify the entity and createDTOPasswordInfo.
+	7.b.2 -  
+
+IMPORTANT: At the first look, classes about Password Login and Group have the same code. I think I should user inheritance, generics or maybe reflection.

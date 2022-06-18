@@ -11,55 +11,43 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "tb_password_group")
-public class PasswordGroup {
+@Table( name = "tb_password_login" )
+public class PasswordLogin {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "password_group_id")
 	private Long id;
-	
-	@NotBlank(message = "The username must have a valid value")
-	private String username;
 	
 	@NotBlank
 	private String name;
 	
-
-	public PasswordGroup() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+	@NotBlank(message = "The username must have a valid value")
+	private String username;
+	
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name);
+		return Objects.hash(id);
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -68,14 +56,16 @@ public class PasswordGroup {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PasswordGroup other = (PasswordGroup) obj;
-		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
+		PasswordLogin other = (PasswordLogin) obj;
+		return Objects.equals(id, other.id);
 	}
-
 	@Override
 	public String toString() {
-		return "PasswordGroup [id=" + id + ", username=" + username + ", name=" + name + "]";
+		return "PasswordLogin [id=" + id + ", name=" + name + ", username=" + username + "]";
 	}
+
+	
+	
 	
 	
 	
