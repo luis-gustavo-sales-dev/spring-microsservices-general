@@ -67,4 +67,8 @@ public class PasswordInfoService {
 		return null;
 	}
 
+	public PasswordInfo update(PasswordInfo passwordInfo) {
+		return passwordRepository.save(passwordInfo);
+	}
+
 }

@@ -5,10 +5,12 @@ import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -106,7 +108,7 @@ public class PasswordInfoController {
 		
 		BeanUtils.copyProperties(createOrUpdatePasswordInfoDTO, passwordInfo, "login", "group");
 		
-		System.out.println("Password Info after BeanUtils: " + passwordInfo);
+//		System.out.println("Password Info after BeanUtils: " + passwordInfo);
 
 		// Find by login id and verify if the user has access
 		
@@ -114,7 +116,7 @@ public class PasswordInfoController {
 				createOrUpdatePasswordInfoDTO.getLogin(),
 				username);
 		
-		System.out.println("pl: " + pl);
+//		System.out.println("pl: " + pl);
 		
 		if (pl == null) {
 			throw new LoginNotFoundException("Login id " + 
@@ -124,7 +126,7 @@ public class PasswordInfoController {
 		
 		passwordInfo.setLogin(pl);
 		
-		System.out.println("Password Info after login setted: " + passwordInfo);
+//		System.out.println("Password Info after login setted: " + passwordInfo);
 		
 		// Find by group id and verify if the user has access
 		
@@ -132,7 +134,7 @@ public class PasswordInfoController {
 				createOrUpdatePasswordInfoDTO.getGroup(),
 				username);
 		
-		System.out.println("pg: " + pg);
+//		System.out.println("pg: " + pg);
 		
 		if (pg == null) {
 			throw new GroupNotFoundException("Group id " + 
@@ -142,19 +144,87 @@ public class PasswordInfoController {
 		
 		passwordInfo.setGroup(pg);
 		
-		System.out.println("Password Info after group setted: " + passwordInfo);
+//		System.out.println("Password Info after group setted: " + passwordInfo);
 		
 		passwordInfo.setUsername(username);
 		
-		System.out.println("");
-		System.out.println("Password Info FINAL: " + passwordInfo);
-		System.out.println("");
+		/*
+		 * System.out.println(""); System.out.println("Password Info FINAL: " +
+		 * passwordInfo); System.out.println("");
+		 */
 		
 		var passwordInfoCreated = passwordInfoService.create(passwordInfo);
 		
-		return ResponseEntity.ok(passwordInfoCreated);
+		return ResponseEntity
+				.status(HttpStatus.CREATED)
+				.body(passwordInfoCreated);
 				
 
 	}
 
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<PasswordInfo> updateInfo(
+			@RequestBody CreateOrUpdatePasswordInfoDTO createOrUpdatePasswordInfoDTO,
+			@PathVariable Long id,
+			@RequestHeader Map<String, String> headers) {
+
+		// Find if the user is the owner of the password info
+
+		var username = headers.get("username");
+		
+		var passwordInfo = passwordInfoService.findPasswordInfoById(id);
+		
+		if (passwordInfo == null) {
+			throw new PasswordInfoNotFoundException(
+					"password info with id " + id + " not found.");
+		}
+
+		if (!utilities.canAcessPasswordResource(
+				passwordInfo.getUsername(), 
+				headers.get("username"))) {
+
+			throw new NotAuthorizedPasswordInfoException(
+					"You don't have permission to access this password info with id: " + id);
+		}
+		
+		BeanUtils.copyProperties(createOrUpdatePasswordInfoDTO, passwordInfo, "login", "group");
+
+		// Verifify if the user can access the login
+		
+		var pl = passwordLoginService.findByIdAndUsername(
+				createOrUpdatePasswordInfoDTO.getLogin(),
+				username);
+		
+		if (pl == null) {
+			throw new LoginNotFoundException("Login id " + 
+					createOrUpdatePasswordInfoDTO.getLogin()
+					+ " was not found or you not have permission to use it.");
+		}
+		
+		passwordInfo.setLogin(pl);
+		
+		
+		// Verify if the user can access the group
+		
+		var pg = PasswordGroupService.findByIdAndUsername(
+				createOrUpdatePasswordInfoDTO.getGroup(),
+				username);
+		
+		if (pg == null) {
+			throw new GroupNotFoundException("Group id " + 
+					createOrUpdatePasswordInfoDTO.getGroup()
+					+ " was not found or you not have permission to use it.");
+		}
+		
+		passwordInfo.setGroup(pg);
+		
+		passwordInfo.setUsername(username);
+
+		var passwordInfoUpdated = passwordInfoService.update(passwordInfo);
+		
+		return ResponseEntity.ok(passwordInfoUpdated);
+				
+
+	}
 }
