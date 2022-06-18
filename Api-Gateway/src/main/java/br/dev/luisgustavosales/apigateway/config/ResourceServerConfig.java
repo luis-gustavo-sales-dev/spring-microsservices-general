@@ -27,7 +27,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
 	private static final String[] PUBLIC = { "/micro-oauth/oauth/token" };
 	
-	private static final String[] OPERATOR = { "/micro-users/**", "/micro-generatepassword/**" };
+	private static final String[] OPERATOR = { "/micro-users/**" };
+	
+	private static final String[] PASSWORDS = { "/micro-generatepassword/**" };
 	
 	private static final String[] ADMIN = { "/hr-payroll/**", "/micro-users/**", "/actuator/**", "/hr-worker/actuator/**", "/hr-oauth/actuator/**" };
 	
@@ -45,6 +47,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		.antMatchers(HttpMethod.POST, OPERATOR).hasRole("ADMIN")
 		.antMatchers(HttpMethod.PUT, OPERATOR).hasRole("ADMIN")
 		.antMatchers(HttpMethod.DELETE, OPERATOR).hasRole("ADMIN")
+		.antMatchers(PASSWORDS).hasAnyRole("OPERATOR", "ADMIN")
 		.anyRequest().authenticated();
 		
 		http.cors().configurationSource(corsConfigurationSource());

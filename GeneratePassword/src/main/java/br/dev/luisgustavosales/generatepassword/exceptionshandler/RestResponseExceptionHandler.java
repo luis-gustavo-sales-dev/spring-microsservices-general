@@ -15,14 +15,31 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupAlreadyExistsException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupIsUsedOnPasswordInfoException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupNotFoundException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.NotAuthorizedGroupException;
 
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	@ExceptionHandler(GroupNotFoundException.class)
-	public ResponseEntity<Object> handleUserNotFoundException(
+	public ResponseEntity<Object> handleGroupNotFoundException(
 			GroupNotFoundException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.NOT_FOUND;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(GroupAlreadyExistsException.class)
+	public ResponseEntity<Object> handleGroupAlreadyExistsException(
+			GroupAlreadyExistsException ex,
 			WebRequest request) {
 		
 		var status = HttpStatus.BAD_REQUEST;
@@ -35,9 +52,24 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
 	}
 	
-	@ExceptionHandler(GroupAlreadyExistsException.class)
-	public ResponseEntity<Object> handleUserAlreadyExistsException(
-			GroupAlreadyExistsException ex,
+	@ExceptionHandler(NotAuthorizedGroupException.class)
+	public ResponseEntity<Object> handleNotAuthorizedGroupException(
+			NotAuthorizedGroupException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.BAD_REQUEST;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(GroupIsUsedOnPasswordInfoException.class)
+	public ResponseEntity<Object> handleGroupIsUsedOnPasswordInfoException(
+			GroupIsUsedOnPasswordInfoException ex,
 			WebRequest request) {
 		
 		var status = HttpStatus.BAD_REQUEST;
