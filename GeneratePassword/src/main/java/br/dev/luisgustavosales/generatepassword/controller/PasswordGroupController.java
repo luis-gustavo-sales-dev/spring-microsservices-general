@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.dev.luisgustavosales.generatepassword.config.Utilities;
 import br.dev.luisgustavosales.generatepassword.dtos.CreateOrUpdatePasswordGroupDTO;
 import br.dev.luisgustavosales.generatepassword.entities.PasswordGroup;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupAlreadyExistsException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupIsUsedOnPasswordInfoException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupNotFoundException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.NotAuthorizedGroupException;
 import br.dev.luisgustavosales.generatepassword.repositories.PasswordInfoRepository;
 import br.dev.luisgustavosales.generatepassword.services.PasswordGroupService;
 
@@ -45,12 +49,9 @@ public class PasswordGroupController {
 		var pg = passwordGroupService.findByNameContainingAndUsername(_name, username);
 		
 		if (pg == null) {
-			// Must throw an PasswordGroupNotFoundException
+			// Should I return an empty List or a response without body?
 			return ResponseEntity.notFound().build();
 		}
-		
-		/*var canAccess = utilities.canAcessPasswordResource(
-				pg.getUsername(), headers.get("username"));*/
 		
 		return ResponseEntity.ok(pg);
 		
@@ -66,7 +67,7 @@ public class PasswordGroupController {
 		
 		if (pg == null) {
 			// Must throw an PasswordGroupNotFoundException
-			return ResponseEntity.notFound().build();
+			throw new GroupNotFoundException("Group id " + id + " not found!");
 		}
 		
 		var canAccess = utilities.canAcessPasswordResource(
@@ -74,7 +75,8 @@ public class PasswordGroupController {
 		
 		if (!canAccess) {
 			// Must return an PasswordGroupNotAuthorizedException
-			return ResponseEntity.notFound().build();
+			throw new NotAuthorizedGroupException(
+					"You don't have permission to access group with id: " + id);
 		}
 		
 		return ResponseEntity.ok(pg);
@@ -92,7 +94,8 @@ public class PasswordGroupController {
 		
 		if (pg != null) {
 			// Must throw an PasswordGroupAlreadyExistsException
-			return ResponseEntity.badRequest().build();
+			throw new GroupAlreadyExistsException("Group name " + 
+						createPasswordGroupDTO.getName() + " already exists!");
 		}
 		
 		// It's so important.
@@ -118,7 +121,7 @@ public class PasswordGroupController {
 		
 		if (pg == null) {
 			// Must throw an PasswordGroupNotFoundException
-			return ResponseEntity.notFound().build();
+			throw new GroupNotFoundException("Group id " + id + " not found!");
 		}
 		
 		var canAccess = utilities.canAcessPasswordResource(
@@ -127,7 +130,8 @@ public class PasswordGroupController {
 		
 		if (!canAccess) {
 			// Must return an PasswordGroupNotAuthorizedException
-			return ResponseEntity.notFound().build();
+			throw new NotAuthorizedGroupException(
+					"You don't have permission to access group with id: " + id);
 		}
 		
 		// It's so important.
@@ -155,7 +159,7 @@ public class PasswordGroupController {
 		
 		if (pg == null) {
 			// Must throw an PasswordGroupNotFoundException
-			return ResponseEntity.notFound().build();
+			throw new GroupNotFoundException("Group id " + id + " not found!");
 		}
 		
 		var canAccess = utilities.canAcessPasswordResource(
@@ -164,7 +168,8 @@ public class PasswordGroupController {
 		
 		if (!canAccess) {
 			// Must return an PasswordGroupNotAuthorizedException
-			return ResponseEntity.badRequest().build();
+			throw new NotAuthorizedGroupException(
+					"You don't have permission to access group with id: " + id);
 		}
 		
 		// Find password group id on Password Info cause of reference integrity
@@ -177,7 +182,8 @@ public class PasswordGroupController {
 		if (pi.isPresent()) {
 			// System.out.println("PasswordInfo: " + pi.get());
 			// Must return an PasswordGroupIsUsedOnPasswordInfoException
-			return ResponseEntity.badRequest().build();
+			throw new GroupIsUsedOnPasswordInfoException("This group is used for " +
+							pi.get().getName() + " password info.");
 		}
 		
 		passwordGroupService.deleteById(id);
