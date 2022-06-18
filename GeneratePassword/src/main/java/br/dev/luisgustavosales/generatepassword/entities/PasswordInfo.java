@@ -2,6 +2,7 @@ package br.dev.luisgustavosales.generatepassword.entities;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class PasswordInfo {
 
 	// @NotBlank(message = "password login must have a valid value")
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn( name = "login_id")
+	@JoinColumn( name = "login_id", nullable = false)
 	private PasswordLogin login;
 
 	@NotBlank(message = "password domain must have a valid value")
@@ -41,7 +42,7 @@ public class PasswordInfo {
 
 	// @NotBlank(message = "password group must have a valid value")
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn( name = "group_id")
+	@JoinColumn( name = "group_id", nullable = false)
 	private PasswordGroup group;
 
 
