@@ -1,5 +1,6 @@
 package br.dev.luisgustavosales.generatepassword.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +13,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.dev.luisgustavosales.generatepassword.config.Utilities;
+import br.dev.luisgustavosales.generatepassword.entities.PasswordGroup;
 import br.dev.luisgustavosales.generatepassword.entities.PasswordLogin;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginNotFoundException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.NotAuthorizedLoginException;
 import br.dev.luisgustavosales.generatepassword.services.PasswordLoginService;
 
 @RestController
-@RequestMapping(value = "/login")
+@RequestMapping(value = "/logins")
 public class PasswordLoginController {
 	
 	@Autowired
@@ -38,7 +43,7 @@ public class PasswordLoginController {
 		
 		if (pl == null) {
 			// Must throw an PasswordLoginNotFoundException
-			return ResponseEntity.notFound().build();
+			throw new LoginNotFoundException("Login id " + id + " not found.");
 		}
 		
 		var canAccess = utilities.canAcessPasswordResource(
@@ -46,10 +51,29 @@ public class PasswordLoginController {
 		
 		if (!canAccess) {
 			// Must return an PasswordLoginNotAuthorizedException
-			return ResponseEntity.notFound().build();
+			throw new NotAuthorizedLoginException(
+					"You don't have permission to access login with id: " + id);
 		}
 		
 		return ResponseEntity.ok(pl);
+		
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<PasswordLogin>> findLoginByParams(
+			@RequestParam String _name,
+			@RequestHeader Map<String, String> headers) {
+		
+		var username = headers.get("username");
+		
+		var pg = passwordLoginService.findByNameContainingAndUsername(_name, username);
+		
+		if (pg == null) {
+			// Should I return an empty List or a response without body?
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.ok(pg);
 		
 	}
 
@@ -87,7 +111,7 @@ public class PasswordLoginController {
 		
 		if (pl == null) {
 			// Must throw an PasswordLoginNotFoundException
-			return ResponseEntity.notFound().build();
+			throw new LoginNotFoundException("Login id " + id + " not found.");
 		}
 		
 		var canAccess = utilities.canAcessPasswordResource(
@@ -120,7 +144,7 @@ public class PasswordLoginController {
 		
 		if (pl == null) {
 			// Must throw an PasswordLoginNotFoundException
-			return ResponseEntity.notFound().build();
+			throw new LoginNotFoundException("Login id " + id + " not found.");
 		}
 		
 		var canAccess = utilities.canAcessPasswordResource(

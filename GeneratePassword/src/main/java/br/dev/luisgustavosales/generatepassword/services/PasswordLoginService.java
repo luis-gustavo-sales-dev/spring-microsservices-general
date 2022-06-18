@@ -1,5 +1,7 @@
 package br.dev.luisgustavosales.generatepassword.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +49,20 @@ public class PasswordLoginService {
 		return null;
 	}
 	
+	public List<PasswordLogin> findByNameContainingAndUsername(
+			String name,
+			String username) {
+		
+		var pg = passwordRepository.findByNameContainingIgnoreCaseAndUsername(
+				name,
+				username);
+		
+		if (pg.isPresent()) {
+			return pg.get();
+		}
+		return null;
+	}
+	
 	public PasswordLogin findByName(
 			String name) {
 		
@@ -76,4 +92,6 @@ public class PasswordLoginService {
 	public void deleteById(Long id) {
 		passwordRepository.deleteById(id);
 	}
+
+
 }

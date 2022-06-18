@@ -18,31 +18,21 @@ import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexception
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupIsUsedOnPasswordInfoException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupNotFoundException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.NotAuthorizedGroupException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginNotFoundException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.NotAuthorizedLoginException;
 
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler{
 	
+	// Groups Exceptions
+	
+	// Is it possible create more than one Controller advice?
 	@ExceptionHandler(GroupNotFoundException.class)
 	public ResponseEntity<Object> handleGroupNotFoundException(
 			GroupNotFoundException ex,
 			WebRequest request) {
 		
 		var status = HttpStatus.NOT_FOUND;
-		
-		var defaultException = new DefaultException();
-		defaultException.setStatus(status.value());
-		defaultException.setTitle(ex.getMessage());
-		defaultException.setDateTime(LocalDateTime.now());
-		
-		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
-	}
-	
-	@ExceptionHandler(GroupAlreadyExistsException.class)
-	public ResponseEntity<Object> handleGroupAlreadyExistsException(
-			GroupAlreadyExistsException ex,
-			WebRequest request) {
-		
-		var status = HttpStatus.BAD_REQUEST;
 		
 		var defaultException = new DefaultException();
 		defaultException.setStatus(status.value());
@@ -67,9 +57,57 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
 	}
 	
+	@ExceptionHandler(GroupAlreadyExistsException.class)
+	public ResponseEntity<Object> handleGroupAlreadyExistsException(
+			GroupAlreadyExistsException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.BAD_REQUEST;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	
 	@ExceptionHandler(GroupIsUsedOnPasswordInfoException.class)
 	public ResponseEntity<Object> handleGroupIsUsedOnPasswordInfoException(
 			GroupIsUsedOnPasswordInfoException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.BAD_REQUEST;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	// Logins exceptions
+	
+	@ExceptionHandler(LoginNotFoundException.class)
+	public ResponseEntity<Object> handleLoginNotFoundException(
+			LoginNotFoundException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.NOT_FOUND;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(NotAuthorizedLoginException.class)
+	public ResponseEntity<Object> handleNotAuthorizedLoginException(
+			NotAuthorizedLoginException ex,
 			WebRequest request) {
 		
 		var status = HttpStatus.BAD_REQUEST;

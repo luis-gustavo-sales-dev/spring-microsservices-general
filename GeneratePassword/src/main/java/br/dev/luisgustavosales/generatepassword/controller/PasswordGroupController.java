@@ -39,24 +39,6 @@ public class PasswordGroupController {
 	@Autowired
 	private PasswordInfoRepository passwordInfoRepository;
 	
-	@GetMapping
-	public ResponseEntity<List<PasswordGroup>> findGroupByParams(
-			@RequestParam String _name,
-			@RequestHeader Map<String, String> headers) {
-		
-		var username = headers.get("username");
-		
-		var pg = passwordGroupService.findByNameContainingAndUsername(_name, username);
-		
-		if (pg == null) {
-			// Should I return an empty List or a response without body?
-			return ResponseEntity.notFound().build();
-		}
-		
-		return ResponseEntity.ok(pg);
-		
-	}
-
 	@GetMapping("/{id}")
 	public ResponseEntity<PasswordGroup> findGroupById(
 			@PathVariable Long id,
@@ -82,6 +64,26 @@ public class PasswordGroupController {
 		return ResponseEntity.ok(pg);
 		
 	}
+	
+	@GetMapping
+	public ResponseEntity<List<PasswordGroup>> findGroupByParams(
+			@RequestParam String _name,
+			@RequestHeader Map<String, String> headers) {
+		
+		var username = headers.get("username");
+		
+		var pg = passwordGroupService.findByNameContainingAndUsername(_name, username);
+		
+		if (pg == null) {
+			// Should I return an empty List or a response without body?
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.ok(pg);
+		
+	}
+
+
 
 	@PostMapping
 	public ResponseEntity<PasswordGroup> createGroup(
