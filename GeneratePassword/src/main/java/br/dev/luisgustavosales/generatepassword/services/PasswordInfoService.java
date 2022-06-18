@@ -71,4 +71,9 @@ public class PasswordInfoService {
 		return passwordRepository.save(passwordInfo);
 	}
 
+	public void delete(Long id) {
+		// TODO Auto-generated method stub
+		passwordRepository.deleteById(id);
+	}
+
 }
