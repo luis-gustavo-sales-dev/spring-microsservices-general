@@ -59,7 +59,7 @@ Authenticate user and access allowed endpoints
 		5.e.1.1 - GET /?_name
 		5.e.1.2 - GET /id
 		5.e.1.3 - Create exceptions and put on ControllerAdvise and Controller.
-	5.e.2 - Create Controllers, service and repositories for methods POST and PUT HTTP Verbs:
+	5.e.2 - Create Controllers, service and repositories for methods POST and PUT HTTP Verbs: (DONE)
 		5.e.2.1 - POST
 		5.e.2.2 - PUT /id
 		5.e.2.3 - Create exceptions and put on ControllerAdvise and Controller.
