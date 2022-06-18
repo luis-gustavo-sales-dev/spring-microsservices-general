@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.dev.luisgustavosales.generatepassword.config.Utilities;
 import br.dev.luisgustavosales.generatepassword.dtos.CreateOrUpdatePasswordGroupDTO;
 import br.dev.luisgustavosales.generatepassword.entities.PasswordGroup;
+import br.dev.luisgustavosales.generatepassword.repositories.PasswordInfoRepository;
 import br.dev.luisgustavosales.generatepassword.services.PasswordGroupService;
 
 @RestController
@@ -30,6 +31,9 @@ public class PasswordGroupController {
 	
 	@Autowired
 	private PasswordGroupService passwordGroupService;
+	
+	@Autowired
+	private PasswordInfoRepository passwordInfoRepository;
 	
 	@GetMapping
 	public ResponseEntity<List<PasswordGroup>> findGroupByParams(
@@ -160,7 +164,20 @@ public class PasswordGroupController {
 		
 		if (!canAccess) {
 			// Must return an PasswordGroupNotAuthorizedException
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.badRequest().build();
+		}
+		
+		// Find password group id on Password Info cause of reference integrity
+		// Can not delete if exists a reference in Password Info
+		
+		var pi = passwordInfoRepository.findByPasswordGroupId(pg.getId());
+		
+		// System.out.println("PasswordInfo: " + pi.get());
+		
+		if (pi.isPresent()) {
+			System.out.println("PasswordInfo: " + pi.get());
+			// Must return an PasswordGroupIsUsedOnPasswordInfoException
+			return ResponseEntity.badRequest().build();
 		}
 		
 		passwordGroupService.deleteById(id);
