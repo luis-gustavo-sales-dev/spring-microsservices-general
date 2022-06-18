@@ -26,7 +26,7 @@ Authenticate user and access allowed endpoints
   5.b - Create entities for passwords and mapping them.
   5.c - Create repositories, services and controllers for passwords groups.
   5.d - Create repositories, services and controllers for passwords logins.
-  5.d - Create repositories, services and controllers for passwords infos.
+  5.e - Create repositories, services and controllers for passwords infos.
 
  6 - Configure api-gateway to permit access for GeneratorPassword Project endpoints.
   6.a - Users can create a group password
