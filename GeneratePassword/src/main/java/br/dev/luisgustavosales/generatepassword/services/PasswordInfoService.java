@@ -1,5 +1,7 @@
 package br.dev.luisgustavosales.generatepassword.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,20 @@ public class PasswordInfoService {
 		return null;
 	}
 	
+	public List<PasswordInfo> findByNameContainingAndUsername(
+			String name,
+			String username) {
+		
+		var pg = passwordRepository.findByNameContainingIgnoreCaseAndUsername(
+				name,
+				username);
+		
+		if (pg.isPresent()) {
+			return pg.get();
+		}
+		return null;
+	}
+	
 	public PasswordInfo createPasswordInfo(
 			PasswordInfo passwordInfo,
 			String username) {
@@ -32,4 +48,6 @@ public class PasswordInfoService {
 		}
 		return null;
 	}
+
+
 }

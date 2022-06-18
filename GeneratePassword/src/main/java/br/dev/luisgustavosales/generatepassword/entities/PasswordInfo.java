@@ -98,11 +98,11 @@ public class PasswordInfo {
 		this.domain = domain;
 	}
 
-	public PasswordGroup getPasswordGroup() {
+	public PasswordGroup getGroup() {
 		return group;
 	}
 
-	public void setPasswordGroup(PasswordGroup passwordGroup) {
+	public void setGroup(PasswordGroup passwordGroup) {
 		this.group = passwordGroup;
 	}
 

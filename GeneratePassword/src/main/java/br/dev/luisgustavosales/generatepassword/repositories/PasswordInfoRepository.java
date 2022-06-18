@@ -1,5 +1,6 @@
 package br.dev.luisgustavosales.generatepassword.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,5 @@ public interface PasswordInfoRepository extends JpaRepository<PasswordInfo, Long
 	Optional<PasswordInfo> findByName(String name);
 	Optional<PasswordInfo> findByGroupId(Long idPasswordGroup);
 	Optional<PasswordInfo> findByLoginId(Long idLoginGroup);
+	Optional<List<PasswordInfo>> findByNameContainingIgnoreCaseAndUsername(String name, String username);
 }

@@ -22,6 +22,9 @@ import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptio
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginIsUsedOnPasswordInfoException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginNotFoundException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.NotAuthorizedLoginException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.passinfosexceptions.NotAuthorizedPasswordInfoException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.passinfosexceptions.PasswordInfoAlreadyExistsException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.passinfosexceptions.PasswordInfoNotFoundException;
 
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler{
@@ -140,6 +143,53 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 	@ExceptionHandler(LoginIsUsedOnPasswordInfoException.class)
 	public ResponseEntity<Object> handleLoginIsUsedOnPasswordInfoException(
 			LoginIsUsedOnPasswordInfoException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.BAD_REQUEST;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	// Passwords info exceptions
+	
+	@ExceptionHandler(PasswordInfoNotFoundException.class)
+	public ResponseEntity<Object> handlePasswordInfoNotFoundException(
+			PasswordInfoNotFoundException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.NOT_FOUND;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(NotAuthorizedPasswordInfoException.class)
+	public ResponseEntity<Object> handleNotAuthorizedPasswordInfoException(
+			NotAuthorizedPasswordInfoException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.BAD_REQUEST;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(PasswordInfoAlreadyExistsException.class)
+	public ResponseEntity<Object> handlePasswordInfoAlreadyExistsException(
+			PasswordInfoAlreadyExistsException ex,
 			WebRequest request) {
 		
 		var status = HttpStatus.BAD_REQUEST;
