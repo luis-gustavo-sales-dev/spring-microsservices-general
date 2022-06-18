@@ -36,3 +36,5 @@ Authenticate user and access allowed endpoints
 
  7 - Configure GeneratorPassword to block access data to other users info
   7.a - Only the owner user can access your password info (group, login, info)
+
+IMPORTANT: At the first look, classes about Password Login and Group have the same code. I think I should user inheritance or maybe refletion.
