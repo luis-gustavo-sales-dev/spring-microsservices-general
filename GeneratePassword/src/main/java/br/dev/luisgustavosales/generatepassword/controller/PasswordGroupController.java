@@ -172,10 +172,7 @@ public class PasswordGroupController {
 		
 		// Find password group id on Password Info cause of reference integrity
 		// Can not delete if exists a reference in Password Info
-		
-		var pi = passwordInfoRepository.findByPasswordGroupId(pg.getId());
-		
-		// System.out.println("PasswordInfo: " + pi.get());
+		var pi = passwordInfoRepository.findByGroupId(pg.getId());
 		
 		if (pi.isPresent()) {
 			// System.out.println("PasswordInfo: " + pi.get());

@@ -19,6 +19,7 @@ import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexception
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupNotFoundException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.NotAuthorizedGroupException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginAlreadyExistsException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginIsUsedOnPasswordInfoException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginNotFoundException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.NotAuthorizedLoginException;
 
@@ -124,6 +125,21 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 	@ExceptionHandler(LoginAlreadyExistsException.class)
 	public ResponseEntity<Object> handleLoginAlreadyExistsException(
 			LoginAlreadyExistsException ex,
+			WebRequest request) {
+		
+		var status = HttpStatus.BAD_REQUEST;
+		
+		var defaultException = new DefaultException();
+		defaultException.setStatus(status.value());
+		defaultException.setTitle(ex.getMessage());
+		defaultException.setDateTime(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, defaultException, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(LoginIsUsedOnPasswordInfoException.class)
+	public ResponseEntity<Object> handleLoginIsUsedOnPasswordInfoException(
+			LoginIsUsedOnPasswordInfoException ex,
 			WebRequest request) {
 		
 		var status = HttpStatus.BAD_REQUEST;

@@ -2,7 +2,6 @@ package br.dev.luisgustavosales.generatepassword.entities;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -43,7 +42,7 @@ public class PasswordInfo {
 	@NotBlank(message = "password group must have a valid value")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn( name = "group_id")
-	private PasswordGroup passwordGroup;
+	private PasswordGroup group;
 
 	@NotBlank(message = "Size must have an value")
 	@Min(value = 6, message = "size must be greater or equal than 6")
@@ -100,11 +99,11 @@ public class PasswordInfo {
 	}
 
 	public PasswordGroup getPasswordGroup() {
-		return passwordGroup;
+		return group;
 	}
 
 	public void setPasswordGroup(PasswordGroup passwordGroup) {
-		this.passwordGroup = passwordGroup;
+		this.group = passwordGroup;
 	}
 
 	public int getSize() {
@@ -135,7 +134,7 @@ public class PasswordInfo {
 	@Override
 	public String toString() {
 		return "PasswordInfo [id=" + id + ", username=" + username + ", name=" + name + ", login=" + login + ", domain="
-				+ domain + ", passwordGroup=" + passwordGroup + ", size=" + size + "]";
+				+ domain + ", passwordGroup=" + group + ", size=" + size + "]";
 	}
 
 	

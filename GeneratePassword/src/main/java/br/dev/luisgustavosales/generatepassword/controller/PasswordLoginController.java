@@ -20,8 +20,10 @@ import br.dev.luisgustavosales.generatepassword.config.Utilities;
 import br.dev.luisgustavosales.generatepassword.dtos.CreateOrUpdatePasswordLoginDTO;
 import br.dev.luisgustavosales.generatepassword.entities.PasswordLogin;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginAlreadyExistsException;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginIsUsedOnPasswordInfoException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginNotFoundException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.NotAuthorizedLoginException;
+import br.dev.luisgustavosales.generatepassword.repositories.PasswordInfoRepository;
 import br.dev.luisgustavosales.generatepassword.services.PasswordLoginService;
 
 @RestController
@@ -33,6 +35,9 @@ public class PasswordLoginController {
 	
 	@Autowired
 	private PasswordLoginService passwordLoginService;
+	
+	@Autowired
+	private PasswordInfoRepository passwordInfoRepository;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<PasswordLogin> findLoginById(
@@ -162,7 +167,19 @@ public class PasswordLoginController {
 		
 		if (!canAccess) {
 			// Must return an PasswordLoginNotAuthorizedException
-			return ResponseEntity.notFound().build();
+			throw new NotAuthorizedLoginException(
+					"You don't have permission to access login with id: " + id);
+		}
+		
+		// Find password group id on Password Info cause of reference integrity
+		// Can not delete if exists a reference in Password Info
+		var pi = passwordInfoRepository.findByLoginId(pl.getId());
+		
+		if (pi.isPresent()) {
+			// System.out.println("PasswordInfo: " + pi.get());
+			// Must return an PasswordGroupIsUsedOnPasswordInfoException
+			throw new LoginIsUsedOnPasswordInfoException("This login is used for " +
+							pi.get().getName() + " password info.");
 		}
 		
 		passwordLoginService.deleteById(id);
