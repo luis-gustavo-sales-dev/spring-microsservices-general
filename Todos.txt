@@ -63,11 +63,11 @@ Authenticate user and access allowed endpoints
 		5.e.2.1 - POST
 		5.e.2.2 - PUT /id
 		5.e.2.3 - Create exceptions and put on ControllerAdvise and Controller.
-	5.e.3 - Create Controllers, service and repositories for methods DELETE HTTP Verbs:
+	5.e.3 - Create Controllers, service and repositories for methods DELETE HTTP Verbs: (DONE)
 		5.e.3.1 - DELETE /id
 		5.e.3.2 - Create exceptions and put on ControllerAdvise and Controller.
-	5.e.4 - Create Exceptions for business and logic rules.
-	5.e.5 - Use exception on PasswordInfoController.
+	5.e.4 - Create Exceptions for business and logic rules. (DONE)
+	5.e.5 - Use exception on PasswordInfoController. (DONE)
 
 
  6 - Configure GeneratorPassword to block access data to other users info
