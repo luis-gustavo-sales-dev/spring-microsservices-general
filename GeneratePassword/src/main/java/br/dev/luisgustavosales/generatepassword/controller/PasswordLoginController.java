@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.dev.luisgustavosales.generatepassword.config.Utilities;
-import br.dev.luisgustavosales.generatepassword.entities.PasswordGroup;
+import br.dev.luisgustavosales.generatepassword.dtos.CreateOrUpdatePasswordLoginDTO;
 import br.dev.luisgustavosales.generatepassword.entities.PasswordLogin;
+import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginAlreadyExistsException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.LoginNotFoundException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.loginsexceptions.NotAuthorizedLoginException;
 import br.dev.luisgustavosales.generatepassword.services.PasswordLoginService;
@@ -79,20 +80,24 @@ public class PasswordLoginController {
 
 	@PostMapping
 	public ResponseEntity<PasswordLogin> createLogin(
-			@RequestBody PasswordLogin passwordLogin,
+			@RequestBody CreateOrUpdatePasswordLoginDTO createOrUpdatePasswordLoginDTO,
 			@RequestHeader Map<String, String> headers) {
 		
 		var username = headers.get("username");
 		
-		var pl = passwordLoginService.findByNameAndUsername(passwordLogin.getName(), username);
+		var pl = passwordLoginService.findByNameAndUsername(createOrUpdatePasswordLoginDTO.getName(), username);
 		
 		if (pl != null) {
 			// Must throw an PasswordLoginAlreadyExistsException
-			return ResponseEntity.badRequest().build();
+			throw new LoginAlreadyExistsException("Login name " + 
+					createOrUpdatePasswordLoginDTO.getName() + " already exists!");
 		}
 		
 		// It's so important.
 		/* Without this line an user can set another username for his PasswordLogin */
+		var passwordLogin = new PasswordLogin();
+		
+		passwordLogin.setName(createOrUpdatePasswordLoginDTO.getName());
 		passwordLogin.setUsername(username);
 		
 		var plc = passwordLoginService.create(passwordLogin);
@@ -102,7 +107,7 @@ public class PasswordLoginController {
 	@PutMapping("/{id}")
 	public ResponseEntity<PasswordLogin> updateLogin(
 			@PathVariable Long id,
-			@RequestBody PasswordLogin passwordLogin,
+			@RequestBody CreateOrUpdatePasswordLoginDTO createOrUpdatePasswordLoginDTO,
 			@RequestHeader Map<String, String> headers) {
 		
 		var username = headers.get("username");
@@ -120,14 +125,18 @@ public class PasswordLoginController {
 		
 		if (!canAccess) {
 			// Must return an PasswordLoginNotAuthorizedException
-			return ResponseEntity.notFound().build();
+			throw new NotAuthorizedLoginException(
+					"You don't have permission to access login with id: " + id);
 		}
 		
 		// It's so important.
 		/* Without this line an user can set another username for his PasswordLogin */
-		passwordLogin.setUsername(username);
 		
-		var plu = passwordLoginService.update(passwordLogin);
+		pl.setName(createOrUpdatePasswordLoginDTO.getName());
+		
+		System.out.println("Password Login Updated: " + pl);
+		
+		var plu = passwordLoginService.update(pl);
 		
 		return ResponseEntity.ok(plu);
 	}

@@ -84,7 +84,6 @@ public class PasswordGroupController {
 	}
 
 
-
 	@PostMapping
 	public ResponseEntity<PasswordGroup> createGroup(
 			@RequestBody CreateOrUpdatePasswordGroupDTO createPasswordGroupDTO,
@@ -138,13 +137,10 @@ public class PasswordGroupController {
 		
 		// It's so important.
 		/* Without this line an user can set another username for his PasswordGroup */
-		var passwordGroup = new PasswordGroup();
 		
-		passwordGroup.setId(id);
-		passwordGroup.setName(updatePasswordGroup.getName());
-		passwordGroup.setUsername(username);
+		pg.setName(updatePasswordGroup.getName());
 		
-		var pgu = passwordGroupService.update(passwordGroup);
+		var pgu = passwordGroupService.update(pg);
 		
 		return ResponseEntity.ok(pgu);
 	}
