@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,8 @@ import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexception
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupIsUsedOnPasswordInfoException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.GroupNotFoundException;
 import br.dev.luisgustavosales.generatepassword.exceptionshandler.groupexceptions.NotAuthorizedGroupException;
-import br.dev.luisgustavosales.generatepassword.repositories.PasswordInfoRepository;
 import br.dev.luisgustavosales.generatepassword.services.PasswordGroupService;
+import br.dev.luisgustavosales.generatepassword.services.PasswordInfoService;
 
 @RestController
 @RequestMapping(value = "/groups")
@@ -37,7 +38,7 @@ public class PasswordGroupController {
 	private PasswordGroupService passwordGroupService;
 	
 	@Autowired
-	private PasswordInfoRepository passwordInfoRepository;
+	private PasswordInfoService passwordInfoService;
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<PasswordGroup> findGroupById(
@@ -107,7 +108,9 @@ public class PasswordGroupController {
 		passwordGroup.setUsername(username);
 		
 		var pgc = passwordGroupService.create(passwordGroup);
-		return ResponseEntity.ok(pgc);
+		return ResponseEntity
+				.status(HttpStatus.CREATED)
+				.body(pgc);
 	}
 	
 	@PutMapping("/{id}")
@@ -172,13 +175,13 @@ public class PasswordGroupController {
 		
 		// Find password group id on Password Info cause of reference integrity
 		// Can not delete if exists a reference in Password Info
-		var pi = passwordInfoRepository.findByGroupId(pg.getId());
+		var pi = passwordInfoService.findByGroupId(pg.getId());
 		
-		if (pi.isPresent()) {
+		if (pi != null) {
 			// System.out.println("PasswordInfo: " + pi.get());
 			// Must return an PasswordGroupIsUsedOnPasswordInfoException
 			throw new GroupIsUsedOnPasswordInfoException("This group is used for " +
-							pi.get().getName() + " password info.");
+							pi.getName() + " password info.");
 		}
 		
 		passwordGroupService.deleteById(id);

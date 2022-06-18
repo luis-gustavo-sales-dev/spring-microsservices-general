@@ -10,44 +10,65 @@ import br.dev.luisgustavosales.generatepassword.repositories.PasswordInfoReposit
 
 @Service
 public class PasswordInfoService {
-	
+
 	@Autowired
 	private PasswordInfoRepository passwordRepository;
-	
+
 	public PasswordInfo findPasswordInfoById(Long id) {
 		var passwordInfo = passwordRepository.findById(id);
 		if (passwordInfo.isPresent()) {
-			return passwordInfo.get();	
+			return passwordInfo.get();
 		}
 		return null;
 	}
-	
-	public List<PasswordInfo> findByNameContainingAndUsername(
-			String name,
-			String username) {
-		
-		var pg = passwordRepository.findByNameContainingIgnoreCaseAndUsername(
-				name,
-				username);
-		
+
+	public List<PasswordInfo> findByNameContainingAndUsername(String name, String username) {
+
+		var pg = passwordRepository.findByNameContainingIgnoreCaseAndUsername(name, username);
+
 		if (pg.isPresent()) {
 			return pg.get();
 		}
 		return null;
 	}
 	
-	public PasswordInfo createPasswordInfo(
-			PasswordInfo passwordInfo,
-			String username) {
-		var passwordInfoByUser = passwordRepository
-				.findByNameAndUsername(passwordInfo.getName(), username);
-		
-		if (passwordInfoByUser.isEmpty()) {
-			var passwordInfoCreated = passwordRepository.save(passwordInfo);
-			return passwordInfoCreated;
+	public PasswordInfo findByNameAndUsername(String name, String username) {
+
+		var pg = passwordRepository.findByNameAndUsername(name, username);
+
+		if (pg.isPresent()) {
+			return pg.get();
 		}
 		return null;
 	}
 
+	public PasswordInfo create(PasswordInfo passwordInfo) {
+		return passwordRepository.save(passwordInfo);
+		
+	}
+
+	public PasswordInfo findByLoginId(Long id) {
+		// TODO Auto-generated method stub
+		var pl = this.passwordRepository.findByLoginId(id);
+
+		if (pl.isPresent()) {
+			return pl.get();
+		}
+		return null;
+	}
+
+	public PasswordInfo findByGroupId(Long id) {
+		// TODO Auto-generated method stub
+		var pl = this.passwordRepository.findByGroupId(id);
+
+		if (pl.isPresent()) {
+			return pl.get();
+		}
+		return null;
+	}
+
+	public PasswordInfo update(PasswordInfo passwordInfo) {
+		return passwordRepository.save(passwordInfo);
+	}
 
 }
