@@ -15,9 +15,9 @@ public class Utilities {
 			//System.out.println("return: " + !username.equals(usernameHeader));
 			return false;
 		}
-		System.out.println("Username: " + username);
-		System.out.println("usernameHeader: " + usernameHeader);
-		System.out.println("return: " + true);
+		//System.out.println("Username: " + username);
+		//System.out.println("usernameHeader: " + usernameHeader);
+		//System.out.println("return: " + true);
 		return true;
 	}
 }

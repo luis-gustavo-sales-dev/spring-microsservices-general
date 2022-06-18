@@ -175,7 +175,7 @@ public class PasswordGroupController {
 		// System.out.println("PasswordInfo: " + pi.get());
 		
 		if (pi.isPresent()) {
-			System.out.println("PasswordInfo: " + pi.get());
+			// System.out.println("PasswordInfo: " + pi.get());
 			// Must return an PasswordGroupIsUsedOnPasswordInfoException
 			return ResponseEntity.badRequest().build();
 		}

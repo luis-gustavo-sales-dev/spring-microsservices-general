@@ -25,6 +25,8 @@ Authenticate user and access allowed endpoints
   5.a - Configure api-gateway to create routes and permit access to all generator password endpoints (temporaly).
   5.b - Create entities for passwords and mapping them.
   5.c - Create repositories, services and controllers for passwords groups.
+	5.c.1 - Create an Exception Advisor for all project.
+	5.c.2 - Create Exceptions for business and logic rules.
   5.d - Create repositories, services and controllers for passwords logins.
   5.e - Create repositories, services and controllers for passwords infos.
 
