@@ -1,6 +1,6 @@
 package br.dev.luisgustavosales.generatepassword.dtos;
 
-public class CreatePasswordGroupDTO {
+public class CreateOrUpdatePasswordGroupDTO {
 	
 	private String name;
 

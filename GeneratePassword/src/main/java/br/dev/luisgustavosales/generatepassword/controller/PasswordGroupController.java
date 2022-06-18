@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.dev.luisgustavosales.generatepassword.config.Utilities;
-import br.dev.luisgustavosales.generatepassword.dtos.CreatePasswordGroupDTO;
+import br.dev.luisgustavosales.generatepassword.dtos.CreateOrUpdatePasswordGroupDTO;
 import br.dev.luisgustavosales.generatepassword.entities.PasswordGroup;
 import br.dev.luisgustavosales.generatepassword.services.PasswordGroupService;
 
@@ -79,7 +79,7 @@ public class PasswordGroupController {
 
 	@PostMapping
 	public ResponseEntity<PasswordGroup> createGroup(
-			@RequestBody CreatePasswordGroupDTO createPasswordGroupDTO,
+			@RequestBody CreateOrUpdatePasswordGroupDTO createPasswordGroupDTO,
 			@RequestHeader Map<String, String> headers) {
 		
 		var username = headers.get("username");
@@ -105,7 +105,7 @@ public class PasswordGroupController {
 	@PutMapping("/{id}")
 	public ResponseEntity<PasswordGroup> updateGroup(
 			@PathVariable Long id,
-			@RequestBody PasswordGroup passwordGroup,
+			@RequestBody CreateOrUpdatePasswordGroupDTO updatePasswordGroup,
 			@RequestHeader Map<String, String> headers) {
 		
 		var username = headers.get("username");
@@ -128,6 +128,10 @@ public class PasswordGroupController {
 		
 		// It's so important.
 		/* Without this line an user can set another username for his PasswordGroup */
+		var passwordGroup = new PasswordGroup();
+		
+		passwordGroup.setId(id);
+		passwordGroup.setName(updatePasswordGroup.getName());
 		passwordGroup.setUsername(username);
 		
 		var pgu = passwordGroupService.update(passwordGroup);
